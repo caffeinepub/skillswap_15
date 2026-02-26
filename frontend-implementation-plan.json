@@ -1,0 +1,220 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Skill Exchange Platform — Frontend Implementation",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement user registration and profile management UI with authentication",
+      "acceptanceCriteria": [
+        "A user can register and create a profile with name, bio, offered skills, and wanted skills.",
+        "A user can view and edit their own profile.",
+        "Profile data is persisted on the backend and retrievable by principal ID.",
+        "The profile page displays offered and wanted skills as distinct lists."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useProfile.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for profile operations: useGetCallerUserProfile (with proper actor dependency handling to prevent modal flash), useSaveCallerUserProfile, and useGetUserProfile. Use the authorization component's pattern for preventing profile setup modal flash. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ProfileSetupModal.tsx",
+          "operation": "create",
+          "description": "Create modal component for first-time profile setup. Appears when user is authenticated but has no profile (null returned from getCallerUserProfile). Includes fields for name, bio, and two skill list builders (offered/wanted). Each skill has name, description, category dropdown, and proficiency (1-5). Use shadcn/ui Dialog and Form components. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ProfilePage.tsx",
+          "operation": "create",
+          "description": "Create profile page component displaying user's own profile with edit mode toggle. Shows name, bio, offered skills list (with name, category, proficiency), and wanted skills list. Includes Edit button that switches to inline editing. Use card-based layout and terracotta/sage green accents. Use shadcn/ui Card, Button, and form components."
+        },
+        {
+          "path": "frontend/src/components/UserProfileView.tsx",
+          "operation": "create",
+          "description": "Create read-only profile view component for viewing other users' profiles. Displays user's name, bio, offered skills, wanted skills, and average rating. Accepts a Principal prop. Use same card-based layout as ProfilePage. Include match detection logic (see REQ-3)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire ProfileSetupModal to appear when authenticated user has no profile (using isAuthenticated && !profileLoading && isFetched && userProfile === null pattern). Add route for /profile (own profile) and /profile/:principal (other user's profile). Ensure user must be logged in before seeing application data. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement skill browsing, search, and user directory UI",
+      "acceptanceCriteria": [
+        "A browsable directory of users and their offered skills is displayed on a dedicated page.",
+        "Users can search by skill name and see matching results in real time.",
+        "Each listing shows the user's name, offered skills, and a link to their profile.",
+        "The backend exposes a query to return all users or filter by skill keyword."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useSkillSearch.ts",
+          "operation": "create",
+          "description": "Create React Query hooks: useGetAllProfiles (fetches all user profiles from getAllProfiles) and useSearchSkills (searches skills by term using searchSkills backend method). Include real-time search debouncing."
+        },
+        {
+          "path": "frontend/src/components/SkillDirectory.tsx",
+          "operation": "create",
+          "description": "Create skill directory page component. Displays search input at top, then grid of user cards. Each card shows user name, offered skills (tags), and View Profile link. Use card-based layout with terracotta/sage green theme. When search term present, show matching skills highlighted. Use shadcn/ui Input and Card components. Wire generated empty-search.dim_400x300.png from frontend/public/assets/generated/empty-search.dim_400x300.png when no results found."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for /directory and wire SkillDirectory component. Add navigation link in header/navbar."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement skill exchange matching and request UI",
+      "acceptanceCriteria": [
+        "The system detects when two users have complementary skills and surfaces a 'Match' indicator on their profiles.",
+        "A logged-in user can send an exchange request to another user.",
+        "The recipient can accept or decline the exchange request.",
+        "Accepted matches appear in both users' dashboards under 'Active Exchanges'.",
+        "Exchange request state (pending, accepted, declined) is persisted on the backend."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useExchangeRequests.ts",
+          "operation": "create",
+          "description": "Create React Query hooks: useSendExchangeRequest (mutation calling sendExchangeRequest), useGetMyExchangeRequests (fetches getMyExchangeRequests), and useAcceptExchangeRequest (mutation calling acceptExchangeRequest). Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/matchDetection.ts",
+          "operation": "create",
+          "description": "Create utility function detectMatch(viewerProfile, targetProfile) that returns complementary skill pairs when viewer's wanted skills match target's offered skills AND vice versa. Returns array of match objects with skill names."
+        },
+        {
+          "path": "frontend/src/components/UserProfileView.tsx",
+          "operation": "modify",
+          "description": "Add match detection logic using detectMatch util. When matches exist, display Match indicator badge with terracotta accent color. Show Send Exchange Request button with skill pair selector (dropdown of matched skill pairs). Only show if user is authenticated and viewing another user's profile. Use shadcn/ui Badge and Select components."
+        },
+        {
+          "path": "frontend/src/components/ExchangeRequestsList.tsx",
+          "operation": "create",
+          "description": "Create component displaying user's incoming exchange requests. Shows request sender name, skill pair, timestamp, and Accept/Decline buttons. Use card-based layout with sage green for accept action. Use shadcn/ui Card and Button components. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Dashboard.tsx",
+          "operation": "create",
+          "description": "Create dashboard page component showing user's Active Exchanges (accepted requests) and Pending Requests sections. Active Exchanges section displays matched users with links to conversation threads. Use card-based layout. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for /dashboard and wire Dashboard component. Add navigation link in header/navbar to Dashboard (visible only when authenticated)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement secure messaging UI for matched users",
+      "acceptanceCriteria": [
+        "Only users with an accepted exchange can initiate or view a conversation.",
+        "Messages are sent, stored, and retrieved from the backend.",
+        "A conversation thread UI shows messages ordered chronologically.",
+        "New messages from the other party are visible upon page refresh."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useMessaging.ts",
+          "operation": "create",
+          "description": "Create React Query hooks: useGetMessages (fetches messages with another user using getMessages), and useSendMessage (mutation calling sendMessage). Include polling/refetch logic for refresh-based updates. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ConversationThread.tsx",
+          "operation": "create",
+          "description": "Create conversation thread component accepting otherUserPrincipal prop. Displays messages in chronological order with sender name, content, and timestamp. Shows sent messages aligned right, received messages aligned left. Includes message input field and Send button at bottom. Use card-based layout with message bubbles. Use shadcn/ui Textarea and Button components. Only accessible from Dashboard Active Exchanges section. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add View Messages link/button to each Active Exchange card. Links to /messages/:principal route. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for /messages/:principal and wire ConversationThread component with principal param. Guard route to require authentication. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement ratings and reviews UI for completed exchanges",
+      "acceptanceCriteria": [
+        "A user can submit a rating (1–5 stars) and an optional text review for their exchange partner after an accepted exchange.",
+        "Each user's profile displays their average rating and all reviews they have received.",
+        "A user cannot rate the same exchange more than once.",
+        "Ratings and reviews are persisted on the backend."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useRatings.ts",
+          "operation": "create",
+          "description": "Create React Query hooks: useLeaveRating (mutation calling leaveRating), useGetUserRatings (fetches all ratings for a user using getUserRatings), and useGetAverageRating (fetches average rating using getAverageRating). Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/RatingModal.tsx",
+          "operation": "create",
+          "description": "Create modal component for submitting rating. Includes 1-5 star selector (interactive star icons) and optional text review field. Accepts otherUserPrincipal prop. Use shadcn/ui Dialog, Textarea, and custom star rating component. Use terracotta accent for selected stars. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ReviewsList.tsx",
+          "operation": "create",
+          "description": "Create component displaying all reviews for a user. Shows reviewer name (if available), star rating, review text, and timestamp. Use card-based layout with sage green accents. Use shadcn/ui Card component."
+        },
+        {
+          "path": "frontend/src/components/UserProfileView.tsx",
+          "operation": "modify",
+          "description": "Add average rating display (star icons + numeric value) near user name. Add ReviewsList component below profile details. Add Leave a Review button (visible only when authenticated and viewing another user's profile with an accepted exchange). Opens RatingModal on click."
+        },
+        {
+          "path": "frontend/src/components/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add Leave Review button to each Active Exchange card. Opens RatingModal for the matched user. Use sage green accent for button."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply cohesive warm earthy visual theme across the application",
+      "acceptanceCriteria": [
+        "The color palette and typography are consistent across all pages.",
+        "Skill cards, profile cards, and exchange request UI all use the same design language.",
+        "The theme is visibly distinct from default browser or bootstrap styles.",
+        "Matched skill indicators use a clearly distinguishable accent color."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Define custom CSS variables for warm earthy color palette: terracotta (primary), sage green (secondary), off-white (background), warm gray (text). Set clean sans-serif font stack (e.g., Inter, system-ui). Apply generous whitespace defaults and smooth transitions. Override default shadcn/ui theme colors with custom palette."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme with custom colors matching the warm earthy palette: terracotta, sage, off-white, warm-gray. Configure custom spacing scale for generous whitespace. Set custom border-radius for card-based layouts."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "create",
+          "description": "Create layout component wrapping all pages. Includes header with SkillSwap logo (wire generated logo.dim_256x256.png from frontend/public/assets/generated/logo.dim_256x256.png), navigation links (Directory, Dashboard, Profile), and LoginButton. Apply consistent off-white background and warm gray text. Use generous padding and max-width container. Use shadcn/ui components for header."
+        },
+        {
+          "path": "frontend/src/components/HeroSection.tsx",
+          "operation": "create",
+          "description": "Create hero section component for home/landing area (to be placed on Dashboard or Directory page). Wire generated hero-illustration.dim_1200x500.png from frontend/public/assets/generated/hero-illustration.dim_1200x500.png. Include tagline about skill exchange. Use terracotta accent for CTA button. Use card-based layout with generous whitespace."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all routes with Layout component to ensure consistent theme application across all pages."
+        }
+      ]
+    }
+  ]
+}

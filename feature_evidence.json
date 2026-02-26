@@ -1,0 +1,136 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-a-user-registration-and-profile-management-system-users-must-be-able-to-create-a-profile-with-their-name-bio-skills-they-can-teach-offered-skills-and-skills-they-want-to-learn-wanted-skills-profiles-must-be-stored-on-chain-and-retrievable-by-user-principal",
+      "featureTitle": "Implement a user registration and profile management system. Users must be able to create a profile with their name, bio, skills they can teach (offered skills), and skills they want to learn (wanted skills). Profiles must be stored on-chain and retrievable by user principal.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/ProfilePage.tsx",
+        "frontend/src/components/ProfileSetupModal.tsx",
+        "frontend/src/components/UserProfileView.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-skill-listing-and-browsing-search-system-users-must-be-able-to-browse-all-registered-users-and-their-offered-skills-and-search-filter-by-skill-name-or-category",
+      "featureTitle": "Implement a skill listing and browsing/search system. Users must be able to browse all registered users and their offered skills, and search/filter by skill name or category.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/SkillDirectory.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-skill-exchange-matching-system-when-a-user-views-another-user-s-profile-and-their-offered-wanted-skills-are-complementary-user-a-wants-what-user-b-offers-and-vice-versa-highlight-the-match-and-allow-user-a-to-send-an-exchange-request-to-user-b",
+      "featureTitle": "Implement a skill exchange matching system. When a user views another user's profile and their offered/wanted skills are complementary (user A wants what user B offers, and vice versa), highlight the match and allow user A to send an exchange request to user B.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Dashboard.tsx",
+        "frontend/src/components/ExchangeRequestsList.tsx",
+        "frontend/src/components/UserProfileView.tsx",
+        "frontend/src/utils/matchDetection.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-secure-in-platform-messaging-system-between-matched-users-only-users-with-an-accepted-exchange-match-may-exchange-messages-messages-are-stored-on-the-backend-and-displayed-in-a-conversation-thread-ui",
+      "featureTitle": "Implement a secure in-platform messaging system between matched users. Only users with an accepted exchange match may exchange messages. Messages are stored on the backend and displayed in a conversation thread UI.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/ConversationThread.tsx",
+        "frontend/src/components/Dashboard.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-ratings-and-reviews-system-for-completed-skill-exchange-sessions-after-an-exchange-each-participant-can-leave-a-numeric-rating-1-5-stars-and-a-short-text-review-for-the-other-user-aggregate-ratings-are-displayed-on-user-profiles",
+      "featureTitle": "Implement a ratings and reviews system for completed skill exchange sessions. After an exchange, each participant can leave a numeric rating (1–5 stars) and a short text review for the other user. Aggregate ratings are displayed on user profiles.",
+      "files": [
+        "frontend/src/components/Dashboard.tsx",
+        "frontend/src/components/RatingModal.tsx",
+        "frontend/src/components/ReviewsList.tsx",
+        "frontend/src/components/UserProfileView.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-cohesive-modern-visual-theme-across-the-entire-application-use-a-warm-earthy-color-palette-e-g-terracotta-sage-green-off-white-with-clean-sans-serif-typography-generous-whitespace-card-based-layouts-for-skill-listings-and-profiles-and-subtle-accent-highlights-for-match-action-states-the-aesthetic-should-feel-approachable-community-driven-and-distinct-from-typical-edtech-platforms",
+      "featureTitle": "Apply a cohesive, modern visual theme across the entire application. Use a warm, earthy color palette (e.g., terracotta, sage green, off-white) with clean sans-serif typography, generous whitespace, card-based layouts for skill listings and profiles, and subtle accent highlights for match/action states. The aesthetic should feel approachable, community-driven, and distinct from typical edtech platforms.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/HeroSection.tsx",
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

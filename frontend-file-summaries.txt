@@ -1,0 +1,7 @@
+{
+  "frontend/src/App.tsx": "Main application entry point that sets up TanStack Router v1 with code-based routing, defining all routes (home, directory, profile, user profile, dashboard, messages) and wrapping them in a root layout that handles the profile setup modal and toast notifications.",
+  "frontend/src/hooks/useRouter.ts": "Router utility module that re-exports TanStack Router's Link component, provides a useLocation shim using useRouterState, and exports useNavigate and a useNavigateTo helper for programmatic navigation.",
+  "frontend/src/components/ConversationThread.tsx": "Full conversation thread component for messaging between matched exchange partners, featuring chronological message bubbles (sent right, received left), polling-based refresh, keyboard shortcut (Enter to send), and error handling for unauthorized access.",
+  "frontend/src/components/Layout.tsx": "Application shell component with sticky header (logo, nav links, auth button, mobile menu), main content outlet, and footer with attribution — uses the useRouter shim for active link detection.",
+  "frontend/src/components/HeroSection.tsx": "Landing page hero section with tagline, CTA buttons (Explore Skills + Join Community), feature highlights, and a hero illustration image with decorative gradient background."
+}

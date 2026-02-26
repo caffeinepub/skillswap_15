@@ -1,0 +1,149 @@
+{
+  "kind": "build_request",
+  "title": "Skill Exchange Platform — Initial Build",
+  "projectName": "SkillSwap",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement a user registration and profile management system. Users must be able to create a profile with their name, bio, skills they can teach (offered skills), and skills they want to learn (wanted skills). Profiles must be stored on-chain and retrievable by user principal.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "enables users to exchange skills with one another",
+          "The platform allows users to teach skills they already possess and learn new skills from others"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A user can register and create a profile with name, bio, offered skills, and wanted skills.",
+        "A user can view and edit their own profile.",
+        "Profile data is persisted on the backend and retrievable by principal ID.",
+        "The profile page displays offered and wanted skills as distinct lists."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a skill listing and browsing/search system. Users must be able to browse all registered users and their offered skills, and search/filter by skill name or category.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "connect users with complementary skills",
+          "people with useful skills have no proper way to share their knowledge"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A browsable directory of users and their offered skills is displayed on a dedicated page.",
+        "Users can search by skill name and see matching results in real time.",
+        "Each listing shows the user's name, offered skills, and a link to their profile.",
+        "The backend exposes a query to return all users or filter by skill keyword."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a skill exchange matching system. When a user views another user's profile and their offered/wanted skills are complementary (user A wants what user B offers, and vice versa), highlight the match and allow user A to send an exchange request to user B.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "connect users with complementary skills and enable secure, peer-to-peer skill exchange"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The system detects when two users have complementary skills and surfaces a 'Match' indicator on their profiles.",
+        "A logged-in user can send an exchange request to another user.",
+        "The recipient can accept or decline the exchange request.",
+        "Accepted matches appear in both users' dashboards under 'Active Exchanges'.",
+        "Exchange request state (pending, accepted, declined) is persisted on the backend."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement a secure in-platform messaging system between matched users. Only users with an accepted exchange match may exchange messages. Messages are stored on the backend and displayed in a conversation thread UI.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "secure, peer-to-peer skill exchange"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only users with an accepted exchange can initiate or view a conversation.",
+        "Messages are sent, stored, and retrieved from the backend.",
+        "A conversation thread UI shows messages ordered chronologically.",
+        "New messages from the other party are visible upon page refresh."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement a ratings and reviews system for completed skill exchange sessions. After an exchange, each participant can leave a numeric rating (1–5 stars) and a short text review for the other user. Aggregate ratings are displayed on user profiles.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "cost-effective and collaborative manner",
+          "peer-to-peer skill exchange"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A user can submit a rating (1–5 stars) and an optional text review for their exchange partner after an accepted exchange.",
+        "Each user's profile displays their average rating and all reviews they have received.",
+        "A user cannot rate the same exchange more than once.",
+        "Ratings and reviews are persisted on the backend."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply a cohesive, modern visual theme across the entire application. Use a warm, earthy color palette (e.g., terracotta, sage green, off-white) with clean sans-serif typography, generous whitespace, card-based layouts for skill listings and profiles, and subtle accent highlights for match/action states. The aesthetic should feel approachable, community-driven, and distinct from typical edtech platforms.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "accessible, scalable, and user-friendly"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The color palette and typography are consistent across all pages.",
+        "Skill cards, profile cards, and exchange request UI all use the same design language.",
+        "The theme is visibly distinct from default browser or bootstrap styles.",
+        "Matched skill indicators use a clearly distinguishable accent color."
+      ]
+    }
+  ],
+  "constraints": [
+    "All backend logic must reside in a single Motoko actor in backend/main.mo.",
+    "Authentication must use Internet Identity only; no third-party auth providers.",
+    "Do not use any external databases; all state must be stored in Motoko stable variables.",
+    "Messaging is only available between users with an accepted exchange match — not open to all users.",
+    "Do not implement real-time WebSocket-based messaging; polling on page load/refresh is acceptable."
+  ],
+  "nonGoals": [
+    "No paid content, course fees, or payment processing.",
+    "No video conferencing or live session scheduling.",
+    "No email or SMS notifications.",
+    "No mobile app or React Native build.",
+    "No external AI-based skill matching or recommendations.",
+    "No admin dashboard or moderation tools in this initial build."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Hero illustration of two people sitting across from each other exchanging knowledge, warm earthy tones, flat vector style (hero-illustration.dim_1200x500.png)",
+      "SkillSwap brand logo mark — abstract interlocking arrows or hands motif, terracotta and sage green, minimal flat design (logo.dim_256x256.png)",
+      "Empty state illustration for no search results — a person looking through a magnifying glass, warm earthy palette, flat vector (empty-search.dim_400x300.png)"
+    ],
+    "edits": []
+  }
+}
